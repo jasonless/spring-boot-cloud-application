@@ -1,0 +1,44 @@
+package net.okair.springcloud.auth.authentication.service;
+
+import com.google.common.base.Objects;
+import lombok.Getter;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+/**
+ * @author LiuShiZeng
+ * @since 2020/1/7
+ */
+@Getter
+public class NewMvcRequestMatcher extends MvcRequestMatcher {
+
+    private String pattern;
+    private String method;
+
+    public NewMvcRequestMatcher(HandlerMappingIntrospector introspector, String pattern,String method) {
+        super(introspector, pattern);
+        this.setMethod(HttpMethod.resolve(method));
+        this.pattern = pattern;
+        this.method = method;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(pattern,method);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj){
+            return true;
+        }
+        if(obj == null || getClass() != obj.getClass()){
+            return false;
+        }
+        NewMvcRequestMatcher that = (NewMvcRequestMatcher) obj;
+        return Objects.equal(pattern,that.pattern) && Objects.equal(method,that.getMethod());
+
+    }
+}

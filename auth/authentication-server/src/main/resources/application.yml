@@ -1,0 +1,38 @@
+server:
+  port: 8001
+spring:
+  security:
+    oauth2:
+      jwt:
+        signingKey: 123456
+  application:
+    name: authentication-server
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:172.16.3.180}:${DATASOURCE_PORT:3306}/sc_auth?characterEncoding=UTF-8mb4&useUnicode=true&useSSL=false
+    username: root
+    password: root123
+  mvc:
+    throw-exception-if-no-handler-found: true
+logging:
+  level:
+    org.springframework.web: debug
+    org.springframework.security: DEBUG
+    org.apache.ibatis: debug
+    java.sql.PreparedStatement: debug
+  path: logs/
+  file:
+    max-size: 1GB
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_ZONE_HOST:localhost}:${EUREKA_ZONE_PORT:8761}/eureka/
